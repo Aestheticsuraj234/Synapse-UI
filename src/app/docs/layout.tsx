@@ -1,23 +1,22 @@
-import { source } from "@/lib/source";
+import "fumadocs-ui/style.css";
+
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { baseOptions } from "@/lib/layout.shared";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+
+import { baseOptions } from "@/app/layout.config";
+import { source } from "@/lib/source";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Synapse-ui : Free UI Components to build beautiful websites",
-    default: "Synapse-ui : Free UI Components to build beautiful websites",
+    template: "%s | Synapse UI Docs",
+    default: "Synapse UI Documentation",
   },
 };
-export default function Layout({ children }: LayoutProps<"/docs">) {
+
+export default function DocsRootLayout({ children }: { children: ReactNode }) {
   return (
-    <DocsLayout
-      tree={source.getPageTree()}
-      {...baseOptions()}
-      sidebar={{
-        defaultOpenLevel: 1,
-      }}
-    >
+    <DocsLayout tree={source.pageTree} {...baseOptions}>
       {children}
     </DocsLayout>
   );

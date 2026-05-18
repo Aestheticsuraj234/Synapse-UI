@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Zap } from "lucide-react";
-import AIInput04 from "@/components/synapse-ui-components/ai-inputs/ai-input-04";
+import { AIInput04 } from "@/components/synapse-ui-components/ai-inputs/ai-input-04";
 
 function Header() {
   return (

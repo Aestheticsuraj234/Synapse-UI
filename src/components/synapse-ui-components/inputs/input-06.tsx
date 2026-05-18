@@ -102,7 +102,6 @@ export default function Input_06() {
                   "focus:ring-indigo-500/20",
                 )}
                 suppressHydrationWarning
-                type="text"
               />
               {index !== 6 - 1 && (
                 <div className="absolute top-1/2 -right-2 w-2 transform -translate-y-1/2">

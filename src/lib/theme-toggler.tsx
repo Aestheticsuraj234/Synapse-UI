@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { flushSync } from "react-dom";
 
 import { cn } from "@/lib/utils";
@@ -15,29 +16,21 @@ export const AnimatedThemeToggler = ({
   duration = 400,
   ...props
 }: AnimatedThemeTogglerProps) => {
-  const [isDark, setIsDark] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    updateTheme();
-
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
+    setMounted(true);
   }, []);
+
+  const isDark = resolvedTheme === "dark";
 
   const toggleTheme = useCallback(() => {
     const button = buttonRef.current;
     if (!button) return;
 
+    const nextTheme = isDark ? "light" : "dark";
     const { top, left, width, height } = button.getBoundingClientRect();
     const x = left + width / 2;
     const y = top + height / 2;
@@ -46,10 +39,7 @@ export const AnimatedThemeToggler = ({
     const maxRadius = Math.hypot(Math.max(x, viewportWidth - x), Math.max(y, viewportHeight - y));
 
     const applyTheme = () => {
-      const newTheme = !isDark;
-      setIsDark(newTheme);
-      document.documentElement.classList.toggle("dark");
-      localStorage.setItem("theme", newTheme ? "dark" : "light");
+      setTheme(nextTheme);
     };
 
     if (typeof document.startViewTransition !== "function") {
@@ -76,7 +66,7 @@ export const AnimatedThemeToggler = ({
         );
       });
     }
-  }, [isDark, duration]);
+  }, [isDark, duration, setTheme]);
 
   return (
     <button
@@ -86,7 +76,7 @@ export const AnimatedThemeToggler = ({
       className={cn(className)}
       {...props}
     >
-      {isDark ? <Sun /> : <Moon />}
+      {mounted ? (isDark ? <Sun /> : <Moon />) : <Moon className="opacity-0" />}
       <span className="sr-only">Toggle theme</span>
     </button>
   );

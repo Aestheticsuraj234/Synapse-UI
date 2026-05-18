@@ -1,19 +1,14 @@
 // @ts-nocheck
-import * as __fd_glob_1 from "../src/content/docs/components/action-search-bar.mdx?collection=docs";
-import * as __fd_glob_0 from "../src/content/docs/index.mdx?collection=docs";
-import { server } from "fumadocs-mdx/runtime/server";
-import type * as Config from "../source.config";
+import * as __fd_glob_3 from "../src/content/docs/components/index.mdx?collection=docs"
+import * as __fd_glob_2 from "../src/content/docs/blocks/index.mdx?collection=docs"
+import * as __fd_glob_1 from "../src/content/docs/index.mdx?collection=docs"
+import { default as __fd_glob_0 } from "../src/content/docs/meta.json?collection=docs"
+import { server } from 'fumadocs-mdx/runtime/server';
+import type * as Config from '../source.config';
 
-const create = server<
-  typeof Config,
-  import("fumadocs-mdx/runtime/types").InternalTypeConfig & {
-    DocData: {};
+const create = server<typeof Config, import("fumadocs-mdx/runtime/types").InternalTypeConfig & {
+  DocData: {
   }
->({ doc: { passthroughs: ["extractedReferences"] } });
+}>({"doc":{"passthroughs":["extractedReferences"]}});
 
-export const docs = await create.doc("docs", "src/content/docs", {
-  "index.mdx": __fd_glob_0,
-  "components/action-search-bar.mdx": __fd_glob_1,
-});
-
-export const meta = await create.meta("meta", "content/docs", {});
+export const docs = await create.docs("docs", "src/content/docs", {"meta.json": __fd_glob_0, }, {"index.mdx": __fd_glob_1, "blocks/index.mdx": __fd_glob_2, "components/index.mdx": __fd_glob_3, });

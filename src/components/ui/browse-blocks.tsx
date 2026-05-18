@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";

@@ -1,60 +1,46 @@
-// import { source } from "@/lib/source";
-// import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
-// import { notFound } from "next/navigation";
-// import { getMDXComponents } from "@/components/mdx";
-// import type { Metadata } from "next";
-// import { createRelativeLink } from "fumadocs-ui/mdx";
-
-// export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
-//   const params = await props.params;
-//   const page = source.getPage(params.slug);
-//   if (!page) notFound();
-
-//   const MDX = page.data.body;
-
-//   return (
-//     <DocsPage toc={page.data.toc} full={page.data.full}>
-//       <DocsTitle>{page.data.title}</DocsTitle>
-//       <DocsDescription>{page.data.description}</DocsDescription>
-//       <DocsBody>
-//         <MDX
-//           components={getMDXComponents({
-//             // this allows you to link to other pages with relative file paths
-//             a: createRelativeLink(source, page),
-//           })}
-//         />
-//       </DocsBody>
-//     </DocsPage>
-//   );
-// }
-
-// export async function generateStaticParams() {
-//   return source.generateParams();
-// }
-
-// export async function generateMetadata(props: PageProps<"/docs/[[...slug]]">): Promise<Metadata> {
-//   const params = await props.params;
-//   const page = source.getPage(params.slug);
-//   if (!page) notFound();
-
-//   return {
-//     title: page.data.title,
-//     description: page.data.description,
-//   };
-// }
-
+import { getMDXComponents } from "@/components/mdx";
 import { source } from "@/lib/source";
-import { DocsPage, DocsBody, DocsTitle, DocsDescription } from "fumadocs-ui/page";
+import {
+  DocsBody,
+  DocsDescription,
+  DocsPage,
+  DocsTitle,
+} from "fumadocs-ui/page";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import defaultMdxComponents from "fumadocs-ui/mdx";
-import { Preview } from "@/components/mdx/preview";
-import { PreviewClient } from "@/components/mdx/preview-client";
 
-export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
-  console.log("page", page);
-  if (!page) notFound();
+type PageParams = { slug?: string[] };
+
+export function generateStaticParams() {
+  return source.generateParams();
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<PageParams>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = source.getPage(slug ?? []);
+  if (!page) {
+    return {};
+  }
+  return {
+    title: page.data.title,
+    description: page.data.description,
+  };
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<PageParams>;
+}) {
+  const { slug } = await params;
+  const page = source.getPage(slug ?? []);
+  if (!page) {
+    notFound();
+  }
 
   const MDX = page.data.body;
 
@@ -63,29 +49,8 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX
-          components={{
-            ...defaultMdxComponents,
-            Preview,
-            PreviewClient,
-          }}
-        />
+        <MDX components={getMDXComponents()} />
       </DocsBody>
     </DocsPage>
   );
-}
-
-export async function generateStaticParams() {
-  return source.generateParams();
-}
-
-export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
-  if (!page) notFound();
-
-  return {
-    title: page.data.title,
-    description: page.data.description,
-  };
 }

@@ -1,6 +1,5 @@
 import { Blocks } from "lucide-react";
 import Link from "next/link";
-import { Link as ViewTransitionLink } from "next-view-transitions";
 import { AnimatedThemeToggler } from "@/lib/theme-toggler";
 
 function Header() {
@@ -54,23 +53,24 @@ function Header() {
 
               {/* Navigation */}
               <div className="hidden sm:flex items-center gap-5 ">
-                <ViewTransitionLink
-                  href={"/docs/components/background-path"}
+                <Link
+                  href="/docs"
                   className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-violet-400 transition-colors"
                 >
-                  Components
-                </ViewTransitionLink>
+                  Docs
+                </Link>
 
-                <ViewTransitionLink
+                <Link
                   href={"/pricing"}
                   className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-violet-400 transition-colors"
                 >
                   Pricing
-                </ViewTransitionLink>
+                </Link>
 
                 <Link
-                  href={"<the link of the templates>"}
+                  href="#"
                   target="_blank"
+                  rel="noreferrer"
                   className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-violet-400 transition-colors flex items-center gap-2"
                 >
                   Templates
